@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: {{ include "wishlist.fullname" . }}-server
+  {{- with .Values.deployment.labels }}
+  {{- toYaml . | nindent 8 }}
+  {{- end }}
+  annotations:
+  {{- if .Values.deployment.annotations }}
+    {{- tpl (toYaml .Values.deployment.annotations) . | nindent 8 }}
+  {{- end }}
+  name: {{ include "wishlist.fullname" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: {{ include "wishlist.fullname" . }}-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: {{ include "wishlist.fullname" . }}-server
+      {{- with .Values.deployment.podLabels }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      annotations:
+      {{- if .Values.deployment.podAnnotations }}
+        {{- tpl (toYaml .Values.deployment.podAnnotations) . | nindent 8 }}
+      {{- end }}
+    spec:
+      restartPolicy: Always
+      containers:
+        - env:
+          - name: ORIGIN
+            value: |
+              {{- if (default false .Values.wishlist.origin) }}
+              {{ .Values.wishlist.origin }}
+              {{- else if (default false .Values.ingress.enabled) }}
+              https://{{ default "localhost" .Values.ingress.host }}
+              {{- else }}
+              http://localhost
+              {{- end }}
+          - name: TOKEN_TIME
+            value: {{ .Values.wishlist.token_time | quote }}
+          image: ghcr.io/cmintey/wishlist:latest
+          name: wishlist
+          ports:
+            - containerPort: 3280
+          resources: {}
+          {{- if or .Values.persistence.uploads.enabled .Values.persistence.data.enabled }}
+          volumeMounts:
+          {{- if .Values.persistence.uploads.enabled }}
+            - mountPath: /usr/src/app/uploads
+              name: {{ include "wishlist.fullname" . }}-uploads
+          {{- end }}
+          {{- if .Values.persistence.data.enabled }}
+            - mountPath: /usr/src/app/data
+              name: {{ include "wishlist.fullname" . }}-data
+          {{- end }}
+          {{- end }}
+      {{- if or .Values.persistence.uploads.enabled .Values.persistence.data.enabled }}
+      volumes:
+      {{- if .Values.persistence.uploads.enabled }}
+        - name: {{ include "wishlist.fullname" . }}-uploads
+          persistentVolumeClaim:
+            claimName: {{ include "wishlist.fullname" . }}-uploads
+        {{- end }}
+        {{- if .Values.persistence.uploads.enabled }}
+        - name: {{ include "wishlist.fullname" . }}-data
+          persistentVolumeClaim:
+            claimName: {{ include "wishlist.fullname" . }}-data
+        {{- end }}
+        {{- end }}

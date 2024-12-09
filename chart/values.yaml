@@ -1,0 +1,41 @@
+wishlist:
+  image:
+    repository: ghcr.io/cmintey/wishlist
+    tag: v0.36.1
+  token_time: "72" # hours until signup and password reset tokens expire
+  #  (only if you know what you're doing) Override origin. 
+  #     if left undefined, and ingress is disabled, 
+  #     will default to http://localhost (probably not what you want)
+  # origin: "https://wishlist.example.com"
+
+
+# you can disable persistence for testing, and no PVCs will get created, but all data will be lost on pod deletion/restart
+persistence:
+  data:
+    enabled: true
+    size: 2Gi
+  uploads:
+    enabled: true
+    size: 10Gi
+
+
+ingress:
+  enabled: true
+  # labels: {}
+  # annotations: {}
+  host: "wishlist.example.com"
+  path: "/"
+  # tls:
+  #   hosts:
+  #   - "wishlist.example.com"
+
+
+deployment:
+  labels: {}
+  annotations: {}
+  podAnnotations: {}
+  podLabels: {}
+
+
+# fullnameOverride: ""
+# nameOverride: ""

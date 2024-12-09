@@ -1,0 +1,2 @@
+# cmintey/wishlist helm chart
+This helm chart installs the [Wishlist web application](https://github.com/cmintey/wishlist) written by [cmintey](https://github.com/cmintey/).  This is an **unofficial chart** utilizing the official docker image. Please submit any *application* or container image issues with the upstream repository.  Please do not submit any issues with the helm chart to the upstream repo as it is unofficial and unsupported.
