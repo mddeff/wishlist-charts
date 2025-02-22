@@ -44,7 +44,7 @@ spec:
               {{- end }}
           - name: TOKEN_TIME
             value: {{ .Values.wishlist.token_time | quote }}
-          image: ghcr.io/cmintey/wishlist:latest
+          image: {{ .Values.wishlist.image.repository }}:{{ .Values.wishlist.image.tag }}
           name: wishlist
           ports:
             - containerPort: 3280
