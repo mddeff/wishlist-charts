@@ -1,8 +1,8 @@
 apiVersion: v2
 name: wishlist
 description: Wishlist is a self-hosted wishlist application that you can share with your friends and family.
-version: 0.0.2
-appVersion: "v0.36.1"
+version: 0.0.3
+appVersion: "v0.39.1"
 keywords:
   - wishlist
 sources: 
