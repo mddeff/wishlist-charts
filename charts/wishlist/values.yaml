@@ -1,7 +1,7 @@
 wishlist:
   image:
     repository: ghcr.io/cmintey/wishlist
-    tag: v0.40.0
+    tag: v0.42.5
   token_time: "72" # hours until signup and password reset tokens expire
   #  (only if you know what you're doing) Override origin. 
   #     if left undefined, and ingress is disabled, 
