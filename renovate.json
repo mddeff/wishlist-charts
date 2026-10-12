@@ -13,15 +13,6 @@
           "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
         }
       ]
-    },
-    {
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
-    },
-    {
-    "reviewers": ["fox1e-dev"]
     }
-
   ]
 }
